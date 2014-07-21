@@ -10,40 +10,34 @@ inertial_total_acc_x<-paste("inertial_total_acc_x-", inertialSignalsVector, "")
 inertial_total_acc_y<-paste("inertial_total_acc_y-", inertialSignalsVector, "") 
 inertial_total_acc_z<-paste("inertial_total_acc_z-", inertialSignalsVector, "") 
 
+calculatePath<-function(filetype, filestart){
+   pathbegin<-paste("UCI HAR Dataset/", filetype, sep="")
+   pathend<-paste(filetype, ".txt", sep="")
+   calculatedpath<-paste(paste(pathbegin, filestart, sep=""), pathend, sep="")
+   calculatedpath
+}
 
-test.subjects<-read.table("UCI HAR Dataset/test/subject_test.txt", col.names=c("subject"))
-test.activity<-read.table("UCI HAR Dataset/test/y_test.txt", col.names=c("activity"))
-test.features<-read.table("UCI HAR Dataset/test/X_test.txt", col.names=featureNames)
-test.body_acc_x<-read.table("UCI HAR Dataset/test/Inertial Signals/body_acc_x_test.txt", col.names=inertial_body_acc_x)
-test.body_acc_y<-read.table("UCI HAR Dataset/test/Inertial Signals/body_acc_y_test.txt", col.names=inertial_body_acc_y)
-test.body_acc_z<-read.table("UCI HAR Dataset/test/Inertial Signals/body_acc_z_test.txt", col.names=inertial_body_acc_z)
-test.body_gyro_x<-read.table("UCI HAR Dataset/test/Inertial Signals/body_gyro_x_test.txt", col.names=inertial_body_gyro_x)
-test.body_gyro_y<-read.table("UCI HAR Dataset/test/Inertial Signals/body_gyro_y_test.txt", col.names=inertial_body_gyro_y)
-test.body_gyro_z<-read.table("UCI HAR Dataset/test/Inertial Signals/body_gyro_z_test.txt", col.names=inertial_body_gyro_z)
-test.total_acc_x<-read.table("UCI HAR Dataset/test/Inertial Signals/total_acc_x_test.txt", col.names=inertial_total_acc_x)
-test.total_acc_y<-read.table("UCI HAR Dataset/test/Inertial Signals/total_acc_y_test.txt", col.names=inertial_total_acc_y)
-test.total_acc_z<-read.table("UCI HAR Dataset/test/Inertial Signals/total_acc_z_test.txt", col.names=inertial_total_acc_z)
-alltest<-cbind(test.subjects, test.activity, test.features, test.body_acc_x, test.body_acc_y, test.body_acc_z,test.body_gyro_x, test.body_gyro_y, test.body_gyro_z,test.total_acc_x, test.total_acc_y, test.total_acc_z)
-alltest$type<-"test"
+readData<-function(type){    
+   df.subjectId<-read.table(calculatePath(type, "/subject_"), col.names=c("subjectId"))
+   df.activity<-read.table(calculatePath(type, "/y_"), col.names=c("activity"))
+   df.features<-read.table(calculatePath(type, "/X_"), col.names=featureNames)
+   df.body_acc_x<-read.table(calculatePath(type, "/Inertial Signals/body_acc_x_"), col.names=inertial_body_acc_x)
+   df.body_acc_y<-read.table(calculatePath(type, "/Inertial Signals/body_acc_y_"), col.names=inertial_body_acc_y)
+   df.body_acc_z<-read.table(calculatePath(type, "/Inertial Signals/body_acc_z_"), col.names=inertial_body_acc_z)
+   df.body_gyro_x<-read.table(calculatePath(type, "/Inertial Signals/body_gyro_x_"), col.names=inertial_body_gyro_x)
+   df.body_gyro_y<-read.table(calculatePath(type, "/Inertial Signals/body_gyro_y_"), col.names=inertial_body_gyro_y)
+   df.body_gyro_z<-read.table(calculatePath(type, "/Inertial Signals/body_gyro_z_"), col.names=inertial_body_gyro_z)
+   df.total_acc_x<-read.table(calculatePath(type, "/Inertial Signals/total_acc_x_"), col.names=inertial_total_acc_x)
+   df.total_acc_y<-read.table(calculatePath(type, "/Inertial Signals/total_acc_y_"), col.names=inertial_total_acc_y)
+   df.total_acc_z<-read.table(calculatePath(type, "/Inertial Signals/total_acc_z_"), col.names=inertial_total_acc_z)
+   alldf<-cbind(df.subjectId, df.activity, df.features, df.body_acc_x, df.body_acc_y, df.body_acc_z, df.body_gyro_x, df.body_gyro_y, df.body_gyro_z, df.total_acc_x, df.total_acc_y, df.total_acc_z)
+   alldf$type<-"test"
+   alldf
+}
 
-train.subjects<-read.table("UCI HAR Dataset/train/subject_train.txt", col.names=c("subject"))
-train.activity<-read.table("UCI HAR Dataset/train/y_train.txt", col.names=c("activity"))
-train.features<-read.table("UCI HAR Dataset/train/X_train.txt", col.names=featureNames)
-train.body_acc_x<-read.table("UCI HAR Dataset/train/Inertial Signals/body_acc_x_train.txt", col.names=inertial_body_acc_x)
-train.body_acc_y<-read.table("UCI HAR Dataset/train/Inertial Signals/body_acc_y_train.txt", col.names=inertial_body_acc_y)
-train.body_acc_z<-read.table("UCI HAR Dataset/train/Inertial Signals/body_acc_z_train.txt", col.names=inertial_body_acc_z)
-train.body_gyro_x<-read.table("UCI HAR Dataset/train/Inertial Signals/body_gyro_x_train.txt", col.names=inertial_body_gyro_x)
-train.body_gyro_y<-read.table("UCI HAR Dataset/train/Inertial Signals/body_gyro_y_train.txt", col.names=inertial_body_gyro_y)
-train.body_gyro_z<-read.table("UCI HAR Dataset/train/Inertial Signals/body_gyro_z_train.txt", col.names=inertial_body_gyro_z)
-train.total_acc_x<-read.table("UCI HAR Dataset/train/Inertial Signals/total_acc_x_train.txt", col.names=inertial_total_acc_x)
-train.total_acc_y<-read.table("UCI HAR Dataset/train/Inertial Signals/total_acc_y_train.txt", col.names=inertial_total_acc_y)
-train.total_acc_z<-read.table("UCI HAR Dataset/train/Inertial Signals/total_acc_z_train.txt", col.names=inertial_total_acc_z)
-alltrain<-cbind(train.subjects, train.activity, train.features, train.body_acc_x, train.body_acc_y, train.body_acc_z,train.body_gyro_x, train.body_gyro_y, train.body_gyro_z,train.total_acc_x, train.total_acc_y, train.total_acc_z)
-alltrain$type<-"train"
+alldata<-rbind(readData("test"), readData("train"))
 
-alldata<-rbind(alltest, alltrain)
-
-tidydata<-alldata[,c(grep("^activity$", colnames(alldata)), grep("std", colnames(alldata)),grep("mean", colnames(alldata)))]
+tidydata<-alldata[,c(grep("^subjectId$", colnames(alldata)), grep("^activity$", colnames(alldata)), grep("std", colnames(alldata)),grep("mean", colnames(alldata)))]
 tidydata[["activity"]]<-factor(tidydata[["activity"]], levels=c(1:6), labels=c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
 
 write.csv(tidydata, "tidydata.csv")
