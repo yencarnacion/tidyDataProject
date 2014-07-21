@@ -55,7 +55,7 @@
     * bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
     * angle(): Angle between to vectors.
 
-4. Summary choices that were made on the original data:
+* Summary choices that were made on the original data:
 
     To create the tidy dataset the following was done:
 
