@@ -37,7 +37,9 @@ readData<-function(type){
 
 alldata<-rbind(readData("test"), readData("train"))
 
-tidydata<-alldata[,c(grep("^subjectId$", colnames(alldata)), grep("^activity$", colnames(alldata)), grep("std", colnames(alldata)),grep("mean", colnames(alldata)))]
-tidydata[["activity"]]<-factor(tidydata[["activity"]], levels=c(1:6), labels=c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
+pretidydata<-alldata[,c(grep("^subjectId$", colnames(alldata)), grep("^activity$", colnames(alldata)), grep("std", colnames(alldata)),grep("mean", colnames(alldata)))]
+pretidydata[["activity"]]<-factor(pretidydata[["activity"]], levels=c(1:6), labels=c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
+
+tidydata<-aggregate(. ~ subjectId+activity,data = pretidydata,FUN=mean)
 
 write.csv(tidydata, "tidydata.csv")
